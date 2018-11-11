@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+
+<html>
+	
+	<head>
+
+		<title>js13k-2017</title>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+		<script type="text/javascript" src="dpad/dpad.js"></script>
+	    <link rel="stylesheet" href="dpad/dpad.css">
+	    <script type="text/javascript" src="button/button.js"></script>
+    	<script type="text/javascript" src="https://www.airconsole.com/api/airconsole-1.3.0.js"></script>
+	    <link rel="stylesheet" href="button/button.css">
+		<style type="text/css">
+			body {
+				margin: 0;
+				padding: 0;
+				overflow: hidden;
+				background-color: rgb(0,0,0);
+				-ms-user-select: none;
+		        -moz-user-select: none;
+		        -webkit-user-select: none;
+		        user-select: none;
+			}
+
+			#dpad {
+			    position: absolute;
+			    left: 0px;
+			    top: 0px;
+			    width: 40%;
+			    height: 100%;
+			}
+
+		    .button-80 {
+		        position: absolute;
+		        width: 50%;
+		        height: 60%;
+		        left: 70%;
+		        margin-left: -25%;
+		        font-size: 10px;
+		    }
+
+		    .button-300-150 {
+		        position: absolute;
+		        height: 50%;
+		        width: 20%;
+		        right: 5%;
+		    }
+
+		    .button-80 .button-text {
+		        margin-top: -0.6em;
+		    }
+
+		    #a {
+		        bottom: 0%;
+		        background-position: 50% 0%;
+		    }
+
+	      	.button-a-text {
+		        position: absolute;
+		        left: 0px;
+		        top: 0px;
+		        width: 100%;
+		        padding-bottom: 50%;
+		        height: 0%;
+	      	}
+
+	      	#b {
+	        	top: 0%;
+	        	background-position: 50% 100%;
+	      	}
+
+	      	.button-b-text {
+		        position: absolute;
+		        left: 0px;
+		        bottom: 0px;
+		        width: 100%;
+		        padding-bottom: 50%;
+		        height: 0%;
+		    }
+
+		    .middle-group {
+		        position: absolute;
+		        height: 50%;
+		        width: 20%;
+		        left: 40%;
+		        top: 50%;
+		    }
+
+		    .middle-group-square {
+		        position: absolute;
+		        height: 0%;
+		        width: 100%;
+		        padding-bottom: 100%;
+		        left: 0px;
+		       	top: 0px;
+		     }
+
+		    #start {
+		       bottom: 110%;
+		    }
+	</style>
+
+	</head>
+
+	<body>
+		<div class="middle-group">
+	        <div class="middle-group-square">
+	          	<div id="start" class="button-80"><div class="button-text">START</div></div>
+	        </div>
+      	</div>
+		<div id="dpad" class="dpad">
+			<div class="dpad-relative">
+	          	<div class="dpad-instructions">SWIPE</div>
+	         	<div class="dpad-arrow dpad-arrow-up"></div>
+	        	<div class="dpad-arrow dpad-arrow-down"></div>
+	        	<div class="dpad-arrow dpad-arrow-left"></div>
+	        	<div class="dpad-arrow dpad-arrow-right"></div>
+	        </div>
+		</div>
+		<div id="a" class="button-300-150"><div class="button-a-text"><div class="button-text">A</div></div></div>
+      	<div id="b" class="button-300-150"><div class="button-b-text"><div class="button-text">B</div></div></div>
+
+		<script type="text/javascript" src="dpad/dpad.js"></script>
+		<script type="text/javascript">
+			var airconsole;
+			function initAirConsole() {
+				navigator.vibrate = (navigator.vibrate ||
+                         navigator.webkitVibrate ||
+                         navigator.mozVibrate ||
+                         navigator.msVibrate);
+
+		     	airconsole = new AirConsole({ orientation: "landscape" });
+
+		      	airconsole.onActivePlayersChange = function(player) {
+			        if (player !== undefined) {
+			        	airconsole.message(AirConsole.SCREEN, { state: "Press Start To Play" });
+			        } else {
+			        	airconsole.message(AirConsole.SCREEN, { state: "Waiting For Players" });
+			        }
+			    }
+
+		      	airconsole.onMessage = function(from, data) {
+			        if (from == AirConsole.SCREEN && data.vibrate) {
+			          navigator.vibrate(data.vibrate);
+			        }
+			    }
+	    	}
+
+	    	// initAirConsole();
+
+      		var dpad = new DPad("dpad", {
+	        	directionchange: function(key, pressed) {
+	        		airconsole.message(AirConsole.SCREEN, {
+	          			dpad: {
+		            		directionchange: {
+				              	key: key,
+				              	pressed: pressed
+			            	}
+			          	}
+			        });
+	      		},
+		        touchstart: function() {
+		         	airconsole.message(AirConsole.SCREEN, {
+			            dpad: {
+			             	touch: true
+			            }
+		          	});
+		        },
+		        touchend: function(had_direction) {
+		         	airconsole.message(AirConsole.SCREEN, {
+		          		dpad: {
+		              		touch: false,
+		              		had_direction: had_direction
+		            	}
+		          	});
+		        }
+      		});
+
+      		function createButton(id) {
+	      		var b = new Button(id, {
+	      			down: function () {
+	      				var data = {};
+	      				data["btn_" + id] = "down";
+	          			airconsole.message(AirConsole.SCREEN, data);
+	        		},
+	        		up: function () {
+	      				var data = {};
+	      				data["btn_" + id] = "up";
+	          			airconsole.message(AirConsole.SCREEN, data);
+	        		}
+	      		});
+	      	}
+
+      		createButton("start");
+      		createButton("a");
+      		createButton("b");
+		</script>
+	</body>
+
+</html>
