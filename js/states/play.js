@@ -106,7 +106,6 @@ engine.states.play = {
 
 		ctx.shadowColor = "hsl(0, 0%, 100%)";
 		ctx.shadowBlur = 10;
-
 		ctx.save();
 		ctx.lineWidth = 2;
 		ctx.strokeStyle = "hsl(0, 0%, 100%)";

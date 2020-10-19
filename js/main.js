@@ -18,6 +18,8 @@ function setupGame() {
 	var game = new engine.Game(900, 680, "game", "ui", "wrapper");
 	loadTextures(game);
 
+	alert("Press ENTER to start");
+
 	game.setState(engine.states.play);
 
 	log.debug("Game running.");
@@ -26,45 +28,45 @@ function setupGame() {
 		initStats(game);
 		initGUI(game);
 
-		var keys = engine.keys = {};
-		keys["left"] = keys["right"] = 0;
-		keys["up"] = keys["down"] = 0;
+    	var keys = engine.keys = {};
+    	keys["left"] = keys["right"] = 0;
+    	keys["up"] = keys["down"] = 0;
 
-		engine.Utils.addEventListener(document, "keydown", function(e) {
-			var code = e.keyCode;
-			handleKey(code, 1);
-		});
+    	engine.Utils.addEventListener(document, "keydown", function(e) {
+    		var code = e.keyCode;
+    		handleKey(code, 1);
+    	});
 
-		engine.Utils.addEventListener(document, "keyup", function(e) {
-			var code = e.keyCode;
-			handleKey(code, 0);
-		});
+    	engine.Utils.addEventListener(document, "keyup", function(e) {
+    		var code = e.keyCode;
+    		handleKey(code, 0);
+    	});
 
-		function handleKey(code, isDown) {
-			switch (code) {
-				case 37:
-					keys["left"] = isDown;
-					break;
-				case 38:
-					keys["up"] = isDown;
-					break;
-				case 39:
-					keys["right"] = isDown;
-					break;
-				case 40:
-					keys["down"] = isDown;
-					break;
-				case 66:
-					keys["b"] = isDown;
-					break;
-				case 70:
-					keys["f"] = isDown;
-					break;
-				default:
-					break;
-			}
-		}
-	}
+    	function handleKey(code, isDown) {
+    		switch (code) {
+    			case 37:
+    				keys["left"] = isDown;
+    				break;
+    			case 38:
+    				keys["up"] = isDown;
+    				break;
+    			case 39:
+    				keys["right"] = isDown;
+    				break;
+    			case 40:
+    				keys["down"] = isDown;
+    				break;
+    			case 66:
+    				keys["b"] = isDown;
+    				break;
+    			case 70:
+    				keys["f"] = isDown;
+    				break;
+    			default:
+    				break;
+    		}
+    	}
+    }
 }
 
 function loadTextures(game) {
@@ -193,12 +195,12 @@ function initStats(game) {
 	game._enemies.showPanel(3);
 	game._bullets.showPanel(3);
 	game._particles.showPanel(3);
-	document.body.appendChild(game._fps.dom);
-	document.body.appendChild(game._processing.dom);
-	document.body.appendChild(game._memory.dom);
-	document.body.appendChild(game._enemies.dom);
-	document.body.appendChild(game._bullets.dom);
-	document.body.appendChild(game._particles.dom);
+//	document.body.appendChild(game._fps.dom);
+//	document.body.appendChild(game._processing.dom);
+//	document.body.appendChild(game._memory.dom);
+//	document.body.appendChild(game._enemies.dom);
+//	document.body.appendChild(game._bullets.dom);
+//	document.body.appendChild(game._particles.dom);
 }
 
 function initGUI(game) {
@@ -206,7 +208,7 @@ function initGUI(game) {
 
 	// var folder = gui.addFolder("Debug");
 	// folder.open();
-	gui.add(engine.DEBUG, "debugDraw");
-	gui.add(engine.states.play, "fillAlpha").min(0).max(1).step(0.01);
-	gui.close();
+//	gui.add(engine.DEBUG, "debugDraw");
+//	gui.add(engine.states.play, "fillAlpha").min(0).max(1).step(0.01);
+//	gui.close();
 }
